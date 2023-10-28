@@ -1,28 +1,30 @@
-import { SyntheticEvent, useCallback, useEffect, useRef } from 'react';
+import { ReactElement, useEffect, useRef } from 'react';
 import styles from './SearchResult.module.css';
+import { UserSearchResultItem } from './SearchResultsItem/UserSearchResultItem';
+import { RepoSearchResultItem } from './SearchResultsItem/RepoSearchResultItem';
 
 type SearchResultProps = {
     items?: Array<any>,
-    renderComponent: (...args: any[]) => JSX.Element,
+    mode: string,
     onReachEnd?: () => void,
     endThreshold?: number,
     loading?: boolean,
 };
-export function SearchResult({ items, renderComponent, onReachEnd, endThreshold = 40, loading }: SearchResultProps) {
-
+export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loading }: SearchResultProps) {
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const scrollHandler = (evt: Event) => {
+            // Check if we got to the end of the scrollable section
             const { scrollTop, clientHeight, scrollHeight } = evt.target as HTMLDivElement;
             if (scrollTop + clientHeight >= scrollHeight - endThreshold) {
                 if (onReachEnd) {
                     onReachEnd();
                 }
-                console.log("end reaxhed")
             }
         }
 
+        // Get a ref to the wrapper element
         const wrapper = wrapperRef.current
 
         if (wrapper) {
@@ -52,8 +54,12 @@ export function SearchResult({ items, renderComponent, onReachEnd, endThreshold 
                 <>
                     {
                         items ? items.map((item, index) => (
-                            <div key={index} className={styles.item}>
-                                {renderComponent(item)}
+                            <div key={item.id || item.name || index} className={styles.item}>
+                                {
+                                    mode == 'repo'
+                                        ? <RepoSearchResultItem {...item} />
+                                        : <UserSearchResultItem {...item} />
+                                }
                             </div>
                         )) : null
                     }

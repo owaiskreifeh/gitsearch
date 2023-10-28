@@ -1,9 +1,8 @@
-.dummyBox {
-    height: 1000px;
-    background-color: red;
-}
-
 .container {
+    border-radius: 3px;
+    color: #24292e;
+    margin: 1em;
+    height: 80vh;
 }
 
 .empty {
@@ -15,8 +14,9 @@
 }
 
 .searchResultsWrapper {
-    max-height: 60vh;
-    border: 1px solid green;
+    display: grid;
     overflow-y: scroll;
     overflow-x: hidden;
+    gap: 0.2em;
+    height: calc(100% - 2em);
 }
