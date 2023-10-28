@@ -6,8 +6,13 @@ export class GitRepo implements Serializable{
         public id: string,
         public name: string,
         public owner: GitUser,
-        public fileTypes: string[],
-        public forks: Array<GitUser>,
+        public contentUrl: string[],
+        public forksUrl: string,
+        public forksCount: number,
+        public watchersCount: number,
+        public topics: string[],
+        public url: string,
+        public description: string,
     ) {}
 
 
@@ -16,8 +21,13 @@ export class GitRepo implements Serializable{
             jsonData.id,
             jsonData.full_name,
             GitUser.fromRawJSON(jsonData.owner),
-            jsonData.fileTypes,
-            jsonData.forks,
+            jsonData.contents_url,
+            jsonData.forks_url,
+            jsonData.forks_count,
+            jsonData.watchers,
+            jsonData.topics,
+            jsonData.url,
+            jsonData.description,
         );
     }
 
@@ -26,10 +36,14 @@ export class GitRepo implements Serializable{
             serializedObject.id,
             serializedObject.name,
             GitUser.deserialize(serializedObject.owner),
-            serializedObject.fileTypes,
-            serializedObject.forks.map((fork: any) => GitUser.deserialize(fork)),
-
-        )
+            serializedObject.contentUrl,
+            serializedObject.forksUrl,
+            serializedObject.forksCount,
+            serializedObject.watchersCount,
+            serializedObject.topics,
+            serializedObject.url,
+            serializedObject.description,
+        );
     }
 
     public serialize(): any {
@@ -38,8 +52,13 @@ export class GitRepo implements Serializable{
             id: this.id,
             name: this.name,
             owner: this.owner.serialize(),
-            fileTypes: this.fileTypes,
-            forks: this.forks.map((fork) => fork.serialize()),
+            contentUrl: this.contentUrl,
+            forksUrl: this.forksUrl,
+            forksCount: this.forksCount,
+            watchersCount: this.watchersCount,
+            topics: this.topics,
+            url: this.url,
+            description: this.description,
         };
     }
 

@@ -51,7 +51,30 @@ export class GitHubClient implements GitClient {
     }
    }
 
-   async searchByRepoName(repoName: string, page: number): Promise<GitSearchResultPage<GitRepo>> {
-    return new GitSearchResultPage<GitRepo>([], false, 0, 0)
-   }
+   async searchByRepoName(repoName: string, page: number = 0): Promise<GitSearchResultPage<GitRepo>> {
+    try {
+        const response = await this.octokit.request({
+            method: "GET",
+            url: `/search/repositories?q=${repoName}&page=${page}`,
+        
+        });
+
+        // guard that we got a response with repos data
+        if (response?.data?.items?.length < 1) {
+            return new GitSearchResultPage([], false, 0, 0)
+        }
+
+        // if we got a response with repos data, cast repos to GitRepo model
+        const repos = response.data.items.map((_userJson: any) => GitRepo.fromRawJSON(_userJson));
+        const hasMore = !response.data.incomplete_results;
+        const count = response.data.items.length;
+        const totalCount = response.data.total_count;
+
+        return new GitSearchResultPage<GitRepo>(repos, hasMore, count, totalCount);
+
+    } catch (e) {
+        throw new GitClientFetchError((e as Error).message)
+    }
+}
+
 }
