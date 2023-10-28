@@ -11,7 +11,7 @@ export class GitUser implements Serializable{
     static fromRawJSON (jsonData: any): GitUser {
         return new GitUser(
             jsonData.id,
-            jsonData.name,
+            jsonData.login,
             jsonData.html_url,
             jsonData.avatar_url,
         );
