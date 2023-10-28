@@ -36,6 +36,8 @@ export default function SearchBar({ onTextChange, validator, onValidatorFail, tr
 
         }
 
+        // empty validation errors
+        setValidatorErrors([]);
         // Call onTextChange callback
         onTextChange(value);
 
