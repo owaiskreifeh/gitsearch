@@ -1,6 +1,7 @@
 import { FaEye, FaCodeBranch } from 'react-icons/fa'
 import { GitRepo } from '@/lib/Model/GitRepoModel';
 import styles from './RepoSearchResultItem.module.css'
+import { Tag } from '../../UI/Tag/Tag';
 
 
 
@@ -27,7 +28,7 @@ export function RepoSearchResultItem({ name, contentUrl, forksCount, forksUrl, o
                 <div className={styles.topics}>
                     {
                         topics.map(topic => (
-                            <span key={`TOPIC_${name}_${topic}`} className={styles.topic}>{topic}</span>
+                            <Tag key={`TOPIC_${name}_${topic}`} tag={topic}/>
                         ))
                     }
 
