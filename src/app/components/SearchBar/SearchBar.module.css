@@ -1,19 +1,36 @@
 .container {
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .icon {
+    aspect-ratio: 1;
+    display: block;
+    width: 3em;
+}
 
+.icon svg {
+    width: 100%;
 }
 
 .inputContainer {
-
+    width: 100%;
+    padding: 0.2em;
 }
 
 .input {
-
+    width: 100%;
+    padding: 0.6em;
+    border: 1px solid #d1d5da;
+    border-radius: 0.6em;
+    font-size: 2em;
 }
 
 .validatorErrors {
-    
+    margin: .2em;
+    color: red;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
 }

@@ -1,0 +1,49 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: 100vh;
+    margin: auto;
+    padding: 1em 0em;
+    gap: 1em;
+}
+
+.searchSelectionGroup {
+  display:flex;
+  gap: .4em;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchSelectionGroup span {
+  font-size: 1.2em;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.2em 0.4em;
+    font-size: 0.8em;
+    line-height: 1.5;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    color: #24292e;
+    background-color: #eff3f6;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0.2em;
+  }
+  
+  .button:hover {
+    background-color: #e6ebf1;
+  }
+  .active {
+    background-color: #c6e6ff;
+  }
+  
+  
+
+  @media screen and (max-width : 800px) {
+    .main {
+        width: 100vw;
+    }
+}
