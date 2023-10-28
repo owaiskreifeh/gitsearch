@@ -1,0 +1,22 @@
+.dummyBox {
+    height: 1000px;
+    background-color: red;
+}
+
+.container {
+}
+
+.empty {
+
+}
+
+.loading {
+
+}
+
+.searchResultsWrapper {
+    max-height: 60vh;
+    border: 1px solid green;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
