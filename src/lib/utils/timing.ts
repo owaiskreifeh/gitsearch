@@ -9,3 +9,17 @@ export const debounce = (func: (...args: any[]) => void, delay: number) => {
         }, delay);
     };
 };
+
+export const throttle = <T extends any[]>(
+    func: (...args: T) => void,
+    limit: number
+  ) => {
+    let inThrottle: boolean;
+    return (...args: T) => {
+      if (!inThrottle) {
+        func(...args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  };
