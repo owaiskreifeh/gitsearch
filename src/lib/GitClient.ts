@@ -5,8 +5,8 @@ import { GitRepo } from "./Model/GitRepoModel"
 import { GitUser } from "./Model/GitUserModel"
 
 interface GitClient {
-    searchByUsername: (arg0: string) => Promise<GitSearchResultPage<GitUser>>
-    searchByRepoName: (arg0: string) => Promise<GitSearchResultPage<GitRepo>>
+    searchByUsername: (arg0: string, page: number) => Promise<GitSearchResultPage<GitUser>>
+    searchByRepoName: (arg0: string, page: number) => Promise<GitSearchResultPage<GitRepo>>
 }
 
 class GitClientFetchError extends Error {
@@ -25,11 +25,12 @@ export class GitHubClient implements GitClient {
     })
    }
 
-   async searchByUsername(username: string): Promise<GitSearchResultPage<GitUser>> {
+   async searchByUsername(username: string, page: number = 0): Promise<GitSearchResultPage<GitUser>> {
     try {
         const response = await this.octokit.request({
             method: "GET",
-            url: `/search/users/${username}`,
+            url: `/search/users?q=${username}&page=${page}`,
+        
         });
 
         // guard that we got a response with users data
@@ -38,7 +39,7 @@ export class GitHubClient implements GitClient {
         }
 
         // if we got a response with users data, cast users to GitUser model
-        const users = response.data.items.map((_userJson: any) => GitUser.fromJSON(_userJson));
+        const users = response.data.items.map((_userJson: any) => GitUser.fromRawJSON(_userJson));
         const hasMore = !response.data.incomplete_results;
         const count = response.data.items.length;
         const totalCount = response.data.total_count;
@@ -50,7 +51,7 @@ export class GitHubClient implements GitClient {
     }
    }
 
-   async searchByRepoName(repoName: string): Promise<GitSearchResultPage<GitRepo>> {
+   async searchByRepoName(repoName: string, page: number): Promise<GitSearchResultPage<GitRepo>> {
     return new GitSearchResultPage<GitRepo>([], false, 0, 0)
    }
 }
