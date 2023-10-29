@@ -40,7 +40,11 @@
     background-color: #c6e6ff;
   }
   
-  
+  .error {
+    font-size: smaller;
+    text-align: center;
+    color: #a20505;
+  }
 
   @media screen and (max-width : 800px) {
     .main {

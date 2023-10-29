@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './SearchResult.module.css';
 import { UserSearchResultItem } from './SearchResultsItem/UserSearchResultItem';
 import { RepoSearchResultItem } from './SearchResultsItem/RepoSearchResultItem';
@@ -44,7 +44,7 @@ export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loadi
                 (items && items?.length < 1 && !loading) ?
                     <div className={styles.empty}>
                         <p>
-                            No results yet
+                            No results found
                         </p>
                     </div>
                     : null
@@ -67,7 +67,7 @@ export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loadi
                         (loading) ?
                             <div className={styles.loading}>
                                 <p>
-                                    Loading data
+                                    Loading data ... 
                                 </p>
                             </div>
                             : null

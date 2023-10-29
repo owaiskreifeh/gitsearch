@@ -31,55 +31,53 @@ const validateSearchInput = (value: string) => {
 
 export default function Home() {
 
-  const lastSearchInput = useRef<string>("");
-
   const [searchMode, setSearchMode] = useState(SearchMode.USER);
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Array<any>>([])
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreResults, setHasMoreResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null)
+
 
   const onSearchTextChanged = useCallback((value: string) => {
     if (!value) return; // NOOP
 
-    // @TODO: recheck, some text may differ
-    // if the current input is the same as the last input, or is starting substring of the previous one do nothing
-    // if (lastSearchInput.current.startsWith(value)) {
-    //   return; // NOOP
-    // }
-
-    // update the last searched term
-    lastSearchInput.current = value;
-
-    // Search
-
-    const searchMethod = searchMode == SearchMode.REPO ? searchByRepoName : searchByUsername;
-    setLoading(true);
-    searchMethod(value, 0 /** page */).then(data => {
-      setSearchResults(GitSearchResultPage.deserialize(data).searchResults);
-    }).catch((e) => {
-      console.error(e);
-      setError("something went wrong")
-    }).finally(() => {
-      setLoading(false)
-    })
-
-  }, [searchMode])
-
-
-  useEffect(() => {
-    setCurrentPage(0);
-    setError(null);
-    onSearchTextChanged(lastSearchInput.current);
-  }, [onSearchTextChanged, searchMode])
-
+    setCurrentPage(1);
+    setSearchResults([]);
+    setError(null)
+    setSearchTerm(value);
+  }, [])
 
   function setMode(mode: SearchMode) {
     setSearchResults([]);
+    setCurrentPage(1);
+    setError(null)
     setSearchMode(mode);
   }
 
 
+  useEffect(() => {
+    if (!searchTerm) return; // NOOP
+    const searchMethod = searchMode == SearchMode.REPO ? searchByRepoName : searchByUsername;
+    setLoading(true);
+    searchMethod(searchTerm, currentPage).then(data => {
+      const page = GitSearchResultPage.deserialize(data);
+      setHasMoreResults(page.hasMore);
+      setSearchResults(results => {
+        return [...results, ...page.searchResults]
+      });
+    }).catch((e) => {
+      console.error(e);
+      setError("something went wrong: " + e.message)
+    }).finally(() => {
+      setLoading(false);
+    })
+  }, [
+    currentPage,
+    searchTerm,
+    searchMode,
+  ])
 
   return (
     <main className={styles.main}>
@@ -101,7 +99,7 @@ export default function Home() {
         </button>
         <button
           className={`${styles.button} ${searchMode == SearchMode.REPO ? styles.active : null}`}
-          onClick={() => { setSearchResults([]) ;setSearchMode(SearchMode.REPO) }}>
+          onClick={() => { setSearchResults([]); setSearchMode(SearchMode.REPO) }}>
           Repo
         </button>
         <span>
@@ -109,13 +107,20 @@ export default function Home() {
         </span>
       </div>
 
+      {
+        error && (
+          <div className={styles.error}>
+            {error}
+          </div>
+        )
+      }
+
       <SearchResult
         loading={loading}
         mode={searchMode}
         items={searchResults}
-        onReachEnd={() => setCurrentPage(currentPage + 1)}
+        onReachEnd={debounce(() => { !loading && hasMoreResults && setCurrentPage(currentPage + 1) }, 500)}
       />
-
     </main>
   )
 }
