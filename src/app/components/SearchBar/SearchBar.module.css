@@ -23,14 +23,14 @@
     width: 100%;
     padding: 0.6em;
     border: 1px solid #d1d5da;
-    border-radius: 0.6em;
-    font-size: 2em;
+    border-radius: var(--border-radius-fixed-large);
+    font-size: var(--font-size-title-primary);
 }
 
 .validatorErrors {
     margin: .2em;
-    color: red;
-    font-size: 1em;
+    color: var(--color-text-error);
+    font-size: var(--font-size-caption);
     font-weight: bold;
     text-align: center;
 }

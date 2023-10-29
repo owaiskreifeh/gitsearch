@@ -1,22 +1,24 @@
 .container {
     border-radius: 3px;
-    color: #24292e;
+    color: var(--color-text-primary);
     margin: 1em;
     height: 80vh;
 }
 
 .empty {
-
+    color: var(--color-text-disabled);
 }
 
 .loading {
-
+    display: flex;
+    align-items: center;
+    height: 2em;
 }
 
 .searchResultsWrapper {
     display: grid;
     overflow-y: scroll;
     overflow-x: hidden;
-    gap: 0.2em;
+    gap: var(--gap-small);
     height: calc(100% - 2em);
 }

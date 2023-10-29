@@ -1,3 +1,34 @@
+:root {
+  --color-text-primary: #444;
+  --color-text-secondary: #6b6b6b;
+  --color-text-subtitle: #6b6b6b;
+  --color-text-chip: #034897;
+  --color-text-link: #0366d6;
+  --color-text-disabled: #7d7d7d;
+  --color-text-error: #ab0b0b;
+
+  --color-background-primary: #fff;
+  --color-background-secondary: #eee;
+  --color-background-chip: #c8e1ff;
+
+  --gap-small: 0.2em;
+  --gap-medium: 0.4em;
+  --gap-large: 0.6em;
+
+  --border-radius-fixed-small: 6px;
+  --border-radius-fixed-medium: 12px;
+  --border-radius-fixed-large: 18px;
+  --border-radius-semi: 2em;
+  --border-radius-medium: 4em;
+  --border-radius-circle: 50%;
+
+  --font-size-subtitle: 0.6em;
+  --font-size-caption: 0.8em;
+  --font-size-button: 0.8em;
+  --font-size-title-primary: 1.4em;
+  --font-size-title-secondary: 1.2em;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

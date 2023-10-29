@@ -1,6 +1,6 @@
 .card {
-    border: 1px solid #e1e4e8;
-    border-radius: 6px;
+    border: 1px solid var(--color-background-secondary);
+    border-radius: var(--border-radius-fixed-small);
     padding: 0.8em;
 }
 
@@ -10,51 +10,77 @@
     justify-content: space-between;
 }
 
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-large)
+}
+
 .owner {
     display: flex;
     align-items: center;
-
 }
 
 .ownerAvatar {
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: var(--border-radius-circle);
     margin-right: 10px;
 }
 
 .ownerName {
-    font-size: 1.2em;
+    font-size: var(--font-size-title-secondary);
 }
 
 .name {
-    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+
+    font-size: var(--font-size-title-primary);
     margin: 10px 0;
     max-width: 80%;
     text-overflow: ellipsis;
+    cursor: pointer;
 }
 
-.description {
-    color: #586069;
+.error {
+    font-size: var(--font-size-caption);
+    color: var(--color-text-error);
+    padding: 0.4em;
+}
+
+.more {
+    color: var(--color-text-link)
 }
 
 .languages {
-    margin-bottom: 10px;
-    color: #586069;
+    color: var(--color-text-subtitle);
+    flex-wrap: wrap;
+    display: flex;
+    gap: var(--gap-small)
+}
+
+.languages span {
+    padding: 3px 8px;
+    background-color: #f1f8ff;
+    border-radius: var(--border-radius-fixed-small);
+    color: var(--color-text-chip);
+    font-size: var(--font-size-caption);
+    margin-right: 10px;
 }
 
 .topics {
     max-width: 80%;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4em;
+    gap: var(--gap-small);
 }
 
 .stats {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    color: #586069;
+    color: var(  --color-text-disabled);
 }
 
 .stat {
@@ -75,6 +101,18 @@
     align-items: center;
 }
 
+.forks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-small)
+}
+
+.forkGroup {
+    display: flex;
+    gap: var(--gap-large);
+    flex-wrap: wrap;
+}
+
 @media screen and (max-width: 800px) {
     .header {
         flex-direction: column;
@@ -84,13 +122,13 @@
     }
     .stats {
         flex-direction: row;
-        gap: 0.2em;
+        gap: var(--gap-small)
     }
     .ownerName {
-        font-size: 1em;
+        font-size: var(--font-size-caption)
     }
     .name {
-        font-size: 1.2em;
+        font-size: var(--font-size-title-secondary);
         margin: 10px 0;
         word-break: break-all;
     }
@@ -98,7 +136,7 @@
 
 @media screen and (max-width: 430px) {
     .name {
-        font-size: 1em;
+        font-size: var(--font-size-caption)
     }
     .topics {
         display: none;

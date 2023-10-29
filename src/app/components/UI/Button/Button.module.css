@@ -2,15 +2,15 @@
 .button {
     display: inline-block;
     padding: 0.2em 0.4em;
-    font-size: 0.8em;
+    font-size: var(--font-size-button);
     line-height: 1.5;
     border: 1px solid #d1d5da;
     border-radius: 3px;
-    color: #24292e;
-    background-color: #eff3f6;
+    color: var(--color-text-primary);
+    background-color: var(--color-background-secondary);;
     cursor: pointer;
     text-decoration: none;
-    margin: 0.2em;
+    margin: var(--gap-small)
   }
   
   .button:hover {
