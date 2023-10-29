@@ -12,8 +12,8 @@ export class GitUser implements Serializable{
         return new GitUser(
             jsonData.id,
             jsonData.login,
-            jsonData.html_url,
-            jsonData.avatar_url,
+            jsonData.html_url || jsonData.url,
+            jsonData.avatarUrl || jsonData.avatar_url,
         );
     }
 

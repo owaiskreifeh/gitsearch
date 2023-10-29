@@ -20,6 +20,13 @@ export interface GitClient {
    * @returns {Promise<GitSearchResultPage<GitRepo>>} - The result page containing GitRepo objects.
    */
   searchByRepoName: (repoName: string, page: number) => Promise<GitSearchResultPage<GitRepo>>;
+
+  /**
+   * Get repository by name.
+   * @param {string} repoName - The repository name to fetch.
+   * @returns {Promise<GitSearchResultPage<GitRepo>>} - GitRepo object.
+   */
+  getRepoByName: (repoName: string) => Promise<GitRepo>
 }
 
 /**

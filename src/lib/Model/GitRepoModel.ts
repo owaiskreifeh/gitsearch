@@ -1,4 +1,5 @@
 import { Serializable } from "../Serializable";
+import { GitFork } from "./GitForkModel";
 import { GitUser } from "./GitUserModel";
 
 export class GitRepo implements Serializable{
@@ -6,14 +7,14 @@ export class GitRepo implements Serializable{
         public id: string,
         public name: string,
         public owner: GitUser,
-        public contentUrl: string[],
-        public forksUrl: string,
         public forksCount: number,
         public watchersCount: number,
         public topics: string[],
         public url: string,
         public description: string,
         public language: string,
+        public languages?: string[],
+        public forks?: GitFork[],
     ) {}
 
 
@@ -22,14 +23,16 @@ export class GitRepo implements Serializable{
             jsonData.id,
             jsonData.full_name,
             GitUser.fromRawJSON(jsonData.owner),
-            jsonData.contents_url,
-            jsonData.forks_url,
             jsonData.forks_count,
             jsonData.watchers,
             jsonData.topics,
             jsonData.url,
             jsonData.description,
             jsonData.language,
+            jsonData.languages,
+            Array.isArray(jsonData.forks) 
+                ? jsonData.forks?.map((_forkJson: any) => GitFork.fromRawJSON(_forkJson)) 
+                : null,
         );
     }
 
@@ -38,14 +41,14 @@ export class GitRepo implements Serializable{
             serializedObject.id,
             serializedObject.name,
             GitUser.deserialize(serializedObject.owner),
-            serializedObject.contentUrl,
-            serializedObject.forksUrl,
             serializedObject.forksCount,
             serializedObject.watchersCount,
             serializedObject.topics,
             serializedObject.url,
             serializedObject.description,
             serializedObject.language,
+            serializedObject.languages,
+            serializedObject.forks?.map((_userJson: any) => GitFork.deserialize(_userJson)),
         );
     }
 
@@ -55,14 +58,14 @@ export class GitRepo implements Serializable{
             id: this.id,
             name: this.name,
             owner: this.owner.serialize(),
-            contentUrl: this.contentUrl,
-            forksUrl: this.forksUrl,
             forksCount: this.forksCount,
             watchersCount: this.watchersCount,
             topics: this.topics,
             url: this.url,
             description: this.description,
-            language: this.language
+            language: this.language,
+            languages: this.languages,
+            forks: this.forks?.map(forker => forker.serialize()),
         };
     }
 

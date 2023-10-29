@@ -10,3 +10,8 @@ export async function searchByRepoName(repoName: string, page: number): Promise<
     const response = await AppContainer.gitClient.searchByRepoName(repoName, page);
     return response.serialize();
 }
+
+export async function getRepoByName(repoName: string): Promise<any> {
+    const response = await AppContainer.gitClient.getRepoByName(repoName);
+    return response.serialize();
+}

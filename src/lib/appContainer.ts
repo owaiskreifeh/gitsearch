@@ -1,4 +1,4 @@
-import { GithubClientRest } from "./GitHostClient/GithubClientRest";
+import { GithubClient } from "./GitHostClient/GithubClient";
 
 /**
  * Container for the application, including the GitHub client for accessing the GitHub API.
@@ -9,5 +9,5 @@ export const AppContainer = {
    * The GitHub client instance used for making requests to the GitHub API.
    * The GitHub client provides methods for searching GitHub users and repositories.
    */
-  gitClient: new GithubClientRest()
+  gitClient: new GithubClient()
 };
