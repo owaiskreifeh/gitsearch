@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import styles from './page.module.css'
 
 import SearchBar from '@/app/components/SearchBar/SearchBar'
@@ -62,6 +62,8 @@ export default function Home() {
 
   useEffect(() => {
     if (!searchTerm) return; // NOOP
+
+    // @TODO: implement a function factory based on the search mode
     const searchMethod = searchMode == SearchMode.REPO ? searchByRepoName : searchByUsername;
     setLoading(true);
     searchMethod(searchTerm, currentPage).then(data => {
@@ -69,7 +71,6 @@ export default function Home() {
       setHasMoreResults(page.hasMore);
       store.append(page);
     }).catch((e) => {
-      console.error(e);
       setError("something went wrong: " + e.message)
     }).finally(() => {
       setLoading(false);

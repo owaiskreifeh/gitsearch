@@ -53,7 +53,6 @@ export default function SearchBar({ value, onTextChange, onSubmit, validator, on
     return (
         <div className={styles.container}>
             <div className={styles.inputContainer}>
-                <form onSubmit={ev => {ev.preventDefault(); }}>
                 <input
                     value={inputValue}
                     className={styles.input}
@@ -62,7 +61,6 @@ export default function SearchBar({ value, onTextChange, onSubmit, validator, on
                     onChange={onChangeHandler}
                     data-cy={"search-input"}
                 />
-                </form>
             </div>
             {
                 validatorErrors.length > 0 &&

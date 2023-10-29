@@ -5,24 +5,24 @@
   height: 100vh;
   margin: auto;
   padding: 1em 0em;
-  gap: 1em;
+  gap: var(--gap-large);
 }
 
 .searchModeGroup {
   display: flex;
-  gap: .4em;
+  gap: var(--gap-medium);
   align-items: center;
   justify-content: center;
 }
 
 .searchModeGroup span {
-  font-size: 1.2em;
+  font-size: var(--font-size-title-secondary);
 }
 
 .error {
   font-size: smaller;
   text-align: center;
-  color: #a20505;
+  color: var(--color-text-error);
 }
 
 @media screen and (max-width : 800px) {
