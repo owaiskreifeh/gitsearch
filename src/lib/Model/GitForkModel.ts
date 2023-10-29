@@ -24,7 +24,7 @@ export class GitFork implements Serializable{
         );
     }
 
-    serialize() {
+    public serialize() {
         return {
             __TYPE: this.constructor.name,
             id: this.id,

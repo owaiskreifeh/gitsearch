@@ -7,9 +7,8 @@ import { FaAngleDown, FaCodeBranch, FaEye } from 'react-icons/fa';
 import { Spinner } from '../../UI/Spinner/Spinner';
 import { Tag } from '../../UI/Tag/Tag';
 
-import styles from './RepoSearchResultItem.module.css';
 import { ForkTag } from '../../UI/ForkTag/ForkTag';
-import { GitFork } from '@/lib/Model/GitForkModel';
+import styles from './RepoSearchResultItem.module.css';
 
 
 
@@ -23,10 +22,11 @@ export const RepoSearchResultItem = memo(({ name, forksCount, owner, watchersCou
         if (moreInfo || loading) return;
         setLoading(true);
         getRepoByName(name)
-            .then(setMoreInfo)
+            .then(serializedRepo => { setMoreInfo(GitRepo.deserialize(serializedRepo)) })
             .catch(error => setError(`error while fetching extra data: ${error.message}`))
             .finally(() => setLoading(false));
     }, [loading, moreInfo, name])
+
 
     return (
         <div className={styles.card}>
@@ -67,7 +67,7 @@ export const RepoSearchResultItem = memo(({ name, forksCount, owner, watchersCou
                             <div className={styles.forkGroup}>
                                 {
                                     moreInfo?.forks?.map((fork) => (
-                                        <ForkTag key={fork.id} {...fork} />
+                                        <ForkTag key={fork.id} {...fork} serialize={fork.serialize} />
                                     ))
                                 }
                             </div>
@@ -77,7 +77,7 @@ export const RepoSearchResultItem = memo(({ name, forksCount, owner, watchersCou
 
                 <div className={styles.topics}>
                     {
-                        topics.splice(0, 3).map(topic => (
+                        topics.map(topic => (
                             <Tag key={`TOPIC_${name}_${topic}`} tag={topic} />
                         ))
                     }
