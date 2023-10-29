@@ -1,0 +1,23 @@
+.tag {
+    border-radius: var(--border-radius-semi);
+    background-color: var(--color-background-chip);
+}
+
+.link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--gap-small);
+    padding: 0.2em 0.4em
+}
+
+.avatar {
+    aspect-ratio: 1;
+    width: 28px;
+    border-radius: var(--border-radius-circle);
+}
+
+.name {
+    color: var( --color-text-chip);
+    font-size: var(--font-size-caption);
+}

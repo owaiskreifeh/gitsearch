@@ -1,7 +1,8 @@
 import { GitUser } from '@/lib/Model/GitUserModel';
-import styles from './UserResultsItem.module.css'
+import { memo } from 'react';
+import styles from './UserResultsItem.module.css';
 
-export function UserSearchResultItem({ name, avatarUrl, profileUrl }: GitUser) {
+export const UserSearchResultItem = memo(({ name, avatarUrl, profileUrl }: GitUser) => {
     return (
         <div className={styles.card}>
             <a className={styles.link} href={profileUrl} aria-label={`${name}'s profile`}>
@@ -10,4 +11,6 @@ export function UserSearchResultItem({ name, avatarUrl, profileUrl }: GitUser) {
             </a>
         </div>
     )
-}
+})
+
+UserSearchResultItem.displayName = 'UserSearchResultItem'

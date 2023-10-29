@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { Spinner } from '../UI/Spinner/Spinner';
 import styles from './SearchResult.module.css';
-import { UserSearchResultItem } from './SearchResultsItem/UserSearchResultItem';
 import { RepoSearchResultItem } from './SearchResultsItem/RepoSearchResultItem';
+import { UserSearchResultItem } from './SearchResultsItem/UserSearchResultItem';
 
 type SearchResultProps = {
     items?: Array<any>,
@@ -50,16 +51,16 @@ export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loadi
                     : null
             }
 
-            <div 
+            <div
                 ref={wrapperRef}
                 data-cy={"search-result-wrapper"}
                 className={styles.searchResultsWrapper}>
                 <>
                     {
                         items ? items.map((item, index) => (
-                            <div 
+                            <div
                                 data-cy={"search-result-item"}
-                                key={item.id || item.name || index} 
+                                key={item.id || item.name || index}
                                 className={styles.item}>
                                 {
                                     mode == 'repo'
@@ -72,8 +73,9 @@ export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loadi
                     {
                         (loading) ?
                             <div className={styles.loading}>
+                                <Spinner />
                                 <p>
-                                    Loading data ... 
+                                     Loading data ...
                                 </p>
                             </div>
                             : null
