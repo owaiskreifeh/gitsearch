@@ -5,8 +5,7 @@ import { Tag } from '../../UI/Tag/Tag';
 
 
 
-export function RepoSearchResultItem({ name, contentUrl, forksCount, forksUrl, owner, watchersCount, topics }: GitRepo) {
-    console.log(arguments)
+export function RepoSearchResultItem({ name, contentUrl, forksCount, forksUrl, owner, watchersCount, topics, language }: GitRepo) {
     return (
         <div className={styles.card}>
             <div className={styles.header}>
@@ -25,7 +24,7 @@ export function RepoSearchResultItem({ name, contentUrl, forksCount, forksUrl, o
             </div>
             <div className={styles.body}>
                 <h2 className={styles.name}>{name}</h2>
-                {/* <div className={styles.languages}>Languages: JavaScript, Python, Java</div> */}
+                <div className={styles.languages}>{language}</div>
                 <div className={styles.topics}>
                     {
                         topics.map(topic => (

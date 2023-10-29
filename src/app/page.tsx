@@ -37,9 +37,9 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState<Array<any>>([])
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreResults, setHasMoreResults] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null)
-
 
   const onSearchTextChanged = useCallback((value: string) => {
     if (!value) return; // NOOP

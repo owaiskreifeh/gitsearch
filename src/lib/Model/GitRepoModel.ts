@@ -13,6 +13,7 @@ export class GitRepo implements Serializable{
         public topics: string[],
         public url: string,
         public description: string,
+        public language: string,
     ) {}
 
 
@@ -28,6 +29,7 @@ export class GitRepo implements Serializable{
             jsonData.topics,
             jsonData.url,
             jsonData.description,
+            jsonData.language,
         );
     }
 
@@ -43,6 +45,7 @@ export class GitRepo implements Serializable{
             serializedObject.topics,
             serializedObject.url,
             serializedObject.description,
+            serializedObject.language,
         );
     }
 
@@ -59,6 +62,7 @@ export class GitRepo implements Serializable{
             topics: this.topics,
             url: this.url,
             description: this.description,
+            language: this.language
         };
     }
 
