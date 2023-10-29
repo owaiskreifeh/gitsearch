@@ -1,13 +1,10 @@
-import type { Metadata } from 'next'
+'use client'
 import { Inter } from 'next/font/google'
-import './globals.css'
+import { storeContext, store } from '@/lib/stores'
 
+import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'GitSearch',
-  description: 'Search Github users and repos',
-}
 
 export default function RootLayout({
   children,
@@ -16,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <storeContext.Provider value={store}>
+        <body className={inter.className}>{children}</body>
+      </storeContext.Provider>
     </html>
   )
 }

@@ -1,10 +1,11 @@
 'use client'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './page.module.css'
 
 import SearchBar from '@/app/components/SearchBar/SearchBar'
 import { GitSearchResultPage } from '@/lib/GitSearchResultPage'
 import { debounce } from '@/lib/utils/timing'
+import { storeContext } from '@/lib/stores'
 
 import { searchByRepoName, searchByUsername } from './actions/gitActions'
 import { SearchResult } from './components/SearchResults/SearchResult'
@@ -32,9 +33,10 @@ const validateSearchInput = (value: string) => {
 
 export default function Home() {
 
+  const store = useContext(storeContext);
+
   const [searchMode, setSearchMode] = useState(SearchMode.USER);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<Array<any>>([])
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreResults, setHasMoreResults] = useState(false);
 
@@ -45,13 +47,13 @@ export default function Home() {
     if (!value) return; // NOOP
 
     setCurrentPage(1);
-    setSearchResults([]);
+    store.clear();
     setError(null)
     setSearchTerm(value);
-  }, [])
+  }, [store])
 
   function setMode(mode: SearchMode) {
-    setSearchResults([]);
+    store.clear();
     setCurrentPage(1);
     setError(null)
     setSearchMode(mode);
@@ -65,20 +67,14 @@ export default function Home() {
     searchMethod(searchTerm, currentPage).then(data => {
       const page = GitSearchResultPage.deserialize(data);
       setHasMoreResults(page.hasMore);
-      setSearchResults(results => {
-        return [...results, ...page.searchResults]
-      });
+      store.append(page);
     }).catch((e) => {
       console.error(e);
       setError("something went wrong: " + e.message)
     }).finally(() => {
       setLoading(false);
     })
-  }, [
-    currentPage,
-    searchTerm,
-    searchMode,
-  ])
+  }, [currentPage, searchTerm, searchMode, store])
 
   return (
     <main className={styles.main}>
@@ -122,7 +118,7 @@ export default function Home() {
       <SearchResult
         loading={loading}
         mode={searchMode}
-        items={searchResults}
+        items={store.flatSearchResults}
         onReachEnd={debounce(() => { !loading && hasMoreResults && setCurrentPage(currentPage + 1) }, 500)}
       />
     </main>
