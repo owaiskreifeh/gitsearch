@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 
 import { getRepoByName } from '@/app/actions/gitActions';
 import { GitRepo } from '@/lib/Model/GitRepoModel';
@@ -17,6 +17,8 @@ export const RepoSearchResultItem = memo(({ name, forksCount, owner, watchersCou
     const [loading, setLoading] = useState(false);
     const [moreInfo, setMoreInfo] = useState<GitRepo>();
     const [error, setError] = useState('');
+
+    const topicsToShow = useRef(topics.splice(0, 3));
 
     const handleMoreClicked = useCallback(() => {
         if (moreInfo || loading) return;
@@ -62,7 +64,6 @@ export const RepoSearchResultItem = memo(({ name, forksCount, owner, watchersCou
                 {
                     moreInfo?.forks?.length ?
                         <div className={styles.forks}>
-                            <hr />
                             <small>Forked By:</small>
                             <div className={styles.forkGroup}>
                                 {
@@ -75,13 +76,18 @@ export const RepoSearchResultItem = memo(({ name, forksCount, owner, watchersCou
                         : null
                 }
 
-                <div className={styles.topics}>
-                    {
-                        topics.map(topic => (
-                            <Tag key={`TOPIC_${name}_${topic}`} tag={topic} />
-                        ))
-                    }
-                </div>
+                {
+                    topicsToShow.current ?
+                        <div className={styles.topics}>
+                            {
+                                topicsToShow.current.map(topic => (
+                                    <Tag key={`TOPIC_${name}_${topic}`} tag={topic} />
+                                ))
+                            }
+                        </div>
+                        : null
+                }
+
 
             </div>
 

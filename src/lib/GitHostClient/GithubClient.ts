@@ -68,7 +68,7 @@ export class GithubClient implements GitClient {
           return new GitSearchResultPage([], false, 0, 0);
         }
   
-        const repos = response.data.items.map((_userJson: any) => GitRepo.fromRawJSON(_userJson));
+        const repos = response.data.items.map((_repoJson: any) => GitRepo.fromRawJSON(_repoJson));
         const hasMore = !response.data.incomplete_results;
         const count = response.data.items.length;
         const totalCount = response.data.total_count;

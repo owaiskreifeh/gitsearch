@@ -70,13 +70,12 @@ export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loadi
                             </div>
                         )) : null
                     }
+
                     {
                         (loading) ?
                             <div className={styles.loading}>
                                 <Spinner />
-                                <p>
-                                     Loading data ...
-                                </p>
+                                <p> Loading data ...</p>
                             </div>
                             : null
                     }
