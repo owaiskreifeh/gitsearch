@@ -1,80 +1,112 @@
-import { Octokit } from "@octokit/core"
-import { GitSearchResultPage } from "./GitSearchResultPage"
+import { Octokit } from "@octokit/core";
+import { GitSearchResultPage } from "./GitSearchResultPage";
+import { GitRepo } from "./Model/GitRepoModel";
+import { GitUser } from "./Model/GitUserModel";
 
-import { GitRepo } from "./Model/GitRepoModel"
-import { GitUser } from "./Model/GitUserModel"
-
+/**
+ * Interface representing a Git Client.
+ */
 interface GitClient {
-    searchByUsername: (arg0: string, page: number) => Promise<GitSearchResultPage<GitUser>>
-    searchByRepoName: (arg0: string, page: number) => Promise<GitSearchResultPage<GitRepo>>
+  /**
+   * Search users by username.
+   * @param {string} username - The username to search for.
+   * @param {number} page - The page number.
+   * @returns {Promise<GitSearchResultPage<GitUser>>} - The result page containing GitUser objects.
+   */
+  searchByUsername: (username: string, page: number) => Promise<GitSearchResultPage<GitUser>>;
+  /**
+   * Search repositories by name.
+   * @param {string} repoName - The repository name to search for.
+   * @param {number} page - The page number.
+   * @returns {Promise<GitSearchResultPage<GitRepo>>} - The result page containing GitRepo objects.
+   */
+  searchByRepoName: (repoName: string, page: number) => Promise<GitSearchResultPage<GitRepo>>;
 }
 
+/**
+ * Custom error class for Git Client fetch errors.
+ */
 class GitClientFetchError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "GitClientFetchError";
-    }
+  /**
+   * Constructs a GitClientFetchError with the provided error message.
+   * @param {string} message - The error message.
+   */
+  constructor(message: string) {
+    super(message);
+    this.name = "GitClientFetchError";
+  }
 }
 
+/**
+ * Class representing a GitHub Client.
+ */
 export class GitHubClient implements GitClient {
+  octokit: Octokit;
 
-   octokit: Octokit
-   constructor() {
+  /**
+   * Constructs a GitHubClient instance with the provided authentication token.
+   */
+  constructor() {
     this.octokit = new Octokit({
-        auth: process.env.GITHUB_AUTH_TOKEN
-    })
-   }
+      auth: process.env.GITHUB_AUTH_TOKEN
+    });
+  }
 
-   async searchByUsername(username: string, page: number = 0): Promise<GitSearchResultPage<GitUser>> {
+  /**
+   * Search GitHub users by username.
+   * @param {string} username - The username to search for.
+   * @param {number} page - The page number.
+   * @returns {Promise<GitSearchResultPage<GitUser>>} - The result page containing GitUser objects.
+   */
+  async searchByUsername(username: string, page: number = 0): Promise<GitSearchResultPage<GitUser>> {
     try {
-        const response = await this.octokit.request({
-            method: "GET",
-            url: `/search/users?q=${username}&page=${page}`,
-        
-        });
+      const response = await this.octokit.request({
+        method: "GET",
+        url: `/search/users?q=${username}&page=${page}&sort=followers`,
+      });
 
-        // guard that we got a response with users data
-        if (response?.data?.items?.length < 1) {
-            return new GitSearchResultPage([], false, 0, 0)
-        }
+      if (response?.data?.items?.length < 1) {
+        return new GitSearchResultPage([], false, 0, 0);
+      }
 
-        // if we got a response with users data, cast users to GitUser model
-        const users = response.data.items.map((_userJson: any) => GitUser.fromRawJSON(_userJson));
-        const hasMore = !response.data.incomplete_results;
-        const count = response.data.items.length;
-        const totalCount = response.data.total_count;
+      const users = response.data.items.map((_userJson: any) => GitUser.fromRawJSON(_userJson));
+      const hasMore = !response.data.incomplete_results;
+      const count = response.data.items.length;
+      const totalCount = response.data.total_count;
 
-        return new GitSearchResultPage<GitUser>(users, hasMore, count, totalCount);
+      return new GitSearchResultPage<GitUser>(users, hasMore, count, totalCount);
 
     } catch (e) {
-        throw new GitClientFetchError((e as Error).message)
+      throw new GitClientFetchError((e as Error).message);
     }
-   }
+  }
 
-   async searchByRepoName(repoName: string, page: number = 0): Promise<GitSearchResultPage<GitRepo>> {
+  /**
+   * Search GitHub repositories by name.
+   * @param {string} repoName - The repository name to search for.
+   * @param {number} page - The page number.
+   * @returns {Promise<GitSearchResultPage<GitRepo>>} - The result page containing GitRepo objects.
+   */
+  async searchByRepoName(repoName: string, page: number = 0): Promise<GitSearchResultPage<GitRepo>> {
     try {
-        const response = await this.octokit.request({
-            method: "GET",
-            url: `/search/repositories?q=${repoName}&page=${page}`,
-        
-        });
+      const response = await this.octokit.request({
+        method: "GET",
+        url: `/search/repositories?q=${repoName}&page=${page}`,
+      });
 
-        // guard that we got a response with repos data
-        if (response?.data?.items?.length < 1) {
-            return new GitSearchResultPage([], false, 0, 0)
-        }
+      if (response?.data?.items?.length < 1) {
+        return new GitSearchResultPage([], false, 0, 0);
+      }
 
-        // if we got a response with repos data, cast repos to GitRepo model
-        const repos = response.data.items.map((_userJson: any) => GitRepo.fromRawJSON(_userJson));
-        const hasMore = !response.data.incomplete_results;
-        const count = response.data.items.length;
-        const totalCount = response.data.total_count;
+      const repos = response.data.items.map((_userJson: any) => GitRepo.fromRawJSON(_userJson));
+      const hasMore = !response.data.incomplete_results;
+      const count = response.data.items.length;
+      const totalCount = response.data.total_count;
 
-        return new GitSearchResultPage<GitRepo>(repos, hasMore, count, totalCount);
+      return new GitSearchResultPage<GitRepo>(repos, hasMore, count, totalCount);
 
     } catch (e) {
-        throw new GitClientFetchError((e as Error).message)
+      throw new GitClientFetchError((e as Error).message);
     }
-}
-
+  }
 }
