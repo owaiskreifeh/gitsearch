@@ -84,6 +84,7 @@ export default function Home() {
     <main className={styles.main}>
       <SearchBar
         trim
+        value={searchTerm}
         onTextChange={debounce(onSearchTextChanged, 500)}
         validator={validateSearchInput}
         onValidatorFail={console.error}

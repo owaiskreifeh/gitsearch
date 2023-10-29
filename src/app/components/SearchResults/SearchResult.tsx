@@ -50,11 +50,17 @@ export function SearchResult({ items, mode, onReachEnd, endThreshold = 40, loadi
                     : null
             }
 
-            <div ref={wrapperRef} className={styles.searchResultsWrapper}>
+            <div 
+                ref={wrapperRef}
+                data-cy={"search-result-wrapper"}
+                className={styles.searchResultsWrapper}>
                 <>
                     {
                         items ? items.map((item, index) => (
-                            <div key={item.id || item.name || index} className={styles.item}>
+                            <div 
+                                data-cy={"search-result-item"}
+                                key={item.id || item.name || index} 
+                                className={styles.item}>
                                 {
                                     mode == 'repo'
                                         ? <RepoSearchResultItem {...item} />

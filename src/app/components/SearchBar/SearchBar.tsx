@@ -1,19 +1,26 @@
 
-import { BaseSyntheticEvent, useCallback, useState } from 'react';
+import { BaseSyntheticEvent, MouseEventHandler, useCallback, useState } from 'react';
 import styles from './SearchBar.module.css'
 
 type SearchBarProps = {
+    onSubmit?: MouseEventHandler<HTMLButtonElement> | undefined;
     onTextChange?: ((value: string) => void);
+    value?: string,
     validator?: ((value: string) => string[]);
     onValidatorFail?: ((value: string, errors: string[]) => void);
     trim?: boolean;
 };
 
-export default function SearchBar({ onTextChange, validator, onValidatorFail, trim = true }: SearchBarProps) {
+export default function SearchBar({ value, onTextChange, onSubmit, validator, onValidatorFail, trim = true }: SearchBarProps) {
 
     const [validatorErrors, setValidatorErrors] = useState(Array<string>());
+    const [inputValue, setInputValue] = useState(value);
 
     const onChangeHandler = useCallback((evt: BaseSyntheticEvent) => {
+
+        // bind value
+        setInputValue(evt.target.value)
+
         // trim whitespace if needed
         const value = trim ? evt.target.value.trim() : evt.target.value;
 
@@ -46,12 +53,16 @@ export default function SearchBar({ onTextChange, validator, onValidatorFail, tr
     return (
         <div className={styles.container}>
             <div className={styles.inputContainer}>
+                <form onSubmit={ev => {ev.preventDefault(); }}>
                 <input
+                    value={inputValue}
                     className={styles.input}
                     type="text"
                     placeholder="Search"
                     onChange={onChangeHandler}
+                    data-cy={"search-input"}
                 />
+                </form>
             </div>
             {
                 validatorErrors.length > 0 &&

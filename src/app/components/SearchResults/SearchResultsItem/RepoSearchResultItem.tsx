@@ -6,6 +6,7 @@ import { Tag } from '../../UI/Tag/Tag';
 
 
 export function RepoSearchResultItem({ name, contentUrl, forksCount, forksUrl, owner, watchersCount, topics }: GitRepo) {
+    console.log(arguments)
     return (
         <div className={styles.card}>
             <div className={styles.header}>
