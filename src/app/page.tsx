@@ -8,6 +8,7 @@ import { debounce } from '@/lib/utils/timing'
 
 import { searchByRepoName, searchByUsername } from './actions/gitActions'
 import { SearchResult } from './components/SearchResults/SearchResult'
+import { Button } from './components/UI/Button/Button'
 
 enum SearchMode {
   USER = "user",
@@ -88,20 +89,22 @@ export default function Home() {
         onValidatorFail={console.error}
       />
 
-      <div className={styles.searchSelectionGroup}>
+      <div className={styles.searchModeGroup}>
         <span>
           Search
         </span>
-        <button
-          className={`${styles.button} ${searchMode == SearchMode.USER ? styles.active : null}`}
+        <Button
+          active={searchMode == SearchMode.USER}
           onClick={() => { setMode(SearchMode.USER) }}
-        >Users
-        </button>
-        <button
-          className={`${styles.button} ${searchMode == SearchMode.REPO ? styles.active : null}`}
-          onClick={() => { setSearchResults([]); setSearchMode(SearchMode.REPO) }}>
-          Repo
-        </button>
+        >
+          Users
+        </Button>
+        <Button
+          active={searchMode == SearchMode.REPO}
+          onClick={() => { setMode(SearchMode.REPO) }}
+        >
+          Repos
+        </Button>
         <span>
           in GitHub
         </span>

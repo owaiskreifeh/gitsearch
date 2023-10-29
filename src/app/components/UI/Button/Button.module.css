@@ -1,0 +1,21 @@
+
+.button {
+    display: inline-block;
+    padding: 0.2em 0.4em;
+    font-size: 0.8em;
+    line-height: 1.5;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    color: #24292e;
+    background-color: #eff3f6;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0.2em;
+  }
+  
+  .button:hover {
+    background-color: #e6ebf1;
+  }
+  .active {
+    background-color: #c6e6ff;
+  }
